@@ -64,7 +64,11 @@ public class Traductor {
                         token = "" + letraCodigo[i];
                         tokens.add(token);
                         i++;
-                        token = "" + letraCodigo[i];
+                        /*En caso de no llegar a tener ";" ocurre exepcion porque se esta pasando del limite
+                        del array*/
+                        if (i < letraCodigo.length) {
+                            token = "" + letraCodigo[i];
+                        }
                         if (!token.equals(";")) {
                             error = "';' Es esperado al cerrar parentesis en la linea: " + (linea);
                             break;
