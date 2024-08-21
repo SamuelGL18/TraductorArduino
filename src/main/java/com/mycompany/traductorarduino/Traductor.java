@@ -36,7 +36,9 @@ public class Traductor {
                     /*La funcion esTokenValido chequea si encuentra una palabra reservada
                     * y se asegura que le siga un parentesis*/
                     while(l == '\t' || l == ' ' || l == '\n') {
-                        
+                        if(l == '\n') {
+                        linea++;
+                        }
                         i++;
                         l = letraCodigo[i];
                         if(Character.isUpperCase(l)) {
@@ -60,6 +62,9 @@ public class Traductor {
                         i++;
                         l = letraCodigo[i];
                         while(l != '-') {
+                            if(l == '\n') {
+                                linea++;
+                            }
                             if (i + 1 < letraCodigo.length) {
                                 i++;
                                 l = letraCodigo[i];
@@ -73,7 +78,9 @@ public class Traductor {
                     }
                     
                     while(l == '\t' || l == ' ' || l == '\n') {
-                        
+                        if(l == '\n') {
+                        linea++;
+                        }
                         i++;
                         l = letraCodigo[i];
                         if(Character.isUpperCase(l)) {
