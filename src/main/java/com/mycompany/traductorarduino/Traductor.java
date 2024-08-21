@@ -19,6 +19,7 @@ public class Traductor {
         arreglo, la funcion limpie tambien el error anterior, lo mismo con token*/
         error = "";
         tokens = "";
+        tokensUtiles.clear();
         char[] letraCodigo = codigo.toCharArray();
         String token = "";
         int linea = 1;
@@ -97,7 +98,7 @@ public class Traductor {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            tokensUtiles.clear();
+            
         }
         if (!error.isEmpty()) {
             tokensUtiles.clear();
@@ -118,8 +119,8 @@ public class Traductor {
         StringBuilder arduino = new StringBuilder();
         int TIEMPO_MOVIMIENTO = 500;
         int VELOCIDAD = 255;
+        
         if (error.isEmpty() && !tokensUtiles.isEmpty()) {
-            
             String parar =
                     """
                               motor1.run(RELEASE);
