@@ -35,13 +35,25 @@ public class Traductor {
                 if (Character.isUpperCase(l) || l == '\t' || l == ' ' || l == '\n' || l == '-') {
                     /*La funcion esTokenValido chequea si encuentra una palabra reservada
                     * y se asegura que le siga un parentesis*/
-                    
                     while(l == '\t' || l == ' ' || l == '\n') {
+                        
                         i++;
                         l = letraCodigo[i];
                         if(Character.isUpperCase(l)) {
-                            break;
-                        }
+                            if(letraCodigo[i + 1] != '\t' && letraCodigo[i + 1] != ' ' && letraCodigo[i + 1] != '\n') {
+                                if (token.isEmpty()) {
+                                    break;
+                                } else if(!token.isEmpty() && letraCodigo[i - 1] != '\t' && letraCodigo[i - 1] != ' ' && letraCodigo[i - 1] != '\n') {
+                                    break;
+                                } else {
+                                    l = 'd';
+                                    break;
+                                }
+                            } else {
+                                l = 'x';
+                                break;
+                            }
+                        } 
                     }
                     
                     if(l == '-') {
@@ -61,11 +73,24 @@ public class Traductor {
                     }
                     
                     while(l == '\t' || l == ' ' || l == '\n') {
+                        
                         i++;
                         l = letraCodigo[i];
                         if(Character.isUpperCase(l)) {
-                            break;
-                        }
+                            if(letraCodigo[i + 1] != '\t' && letraCodigo[i + 1] != ' ' && letraCodigo[i + 1] != '\n') {
+                                if (token.isEmpty()) {
+                                    break;
+                                } else if(!token.isEmpty() && letraCodigo[i - 1] != '\t' && letraCodigo[i - 1] != ' ' && letraCodigo[i - 1] != '\n') {
+                                    break;
+                                } else {
+                                    l = 'd';
+                                    break;
+                                }
+                            } else {
+                                l = 'x';
+                                break;
+                            }
+                        } 
                     }
                     token = token + l;
                     char siguiente = letraCodigo[i + 1];
