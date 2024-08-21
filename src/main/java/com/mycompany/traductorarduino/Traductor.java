@@ -1,18 +1,16 @@
 package com.mycompany.traductorarduino;
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 public class Traductor {
     private String error;
     public ArrayList<String> tokensUtiles;
     // Lista de todos los tokens incluyendo parentesis
-    public ArrayList<String> tokens;
+    public String tokens;
 
     public Traductor() {
         tokensUtiles = new ArrayList<>();
-        tokens = new ArrayList<>();
+        tokens = "";
         error = "";
     }
 
@@ -20,6 +18,7 @@ public class Traductor {
         /*Otra vez vacio el error para asegurarse que si el usuario ha cometido un error y lo
         arreglo, la funcion limpie tambien el error anterior, lo mismo con token*/
         error = "";
+        tokens = "";
         char[] letraCodigo = codigo.toCharArray();
         String token = "";
         int linea = 1;
@@ -39,12 +38,12 @@ public class Traductor {
                     char siguiente = letraCodigo[i + 1];
                     if (esTokenValido(token, siguiente)) {
                         tokensUtiles.add(token);
-                        tokens.add(token);
+                        tokens = tokens + "+------------------------------+\nPALABRA RESERVADA => `" + token + "`\n";
                         // Pasa al parentesis
                         i++;
                         // Se limpia y se le asigna el parentesis
                         token = "" + letraCodigo[i];
-                        tokens.add(token);
+                        tokens = tokens + "PARENTESIS ABIERTO => `" + token + "`\n";
                         // Se va a los pasos
                         i++;
                         token = "";
@@ -53,7 +52,7 @@ public class Traductor {
                             i++;
                         }
                         tokensUtiles.add(token);
-                        tokens.add(token);
+                        tokens = tokens + "PASOS => `" + token + "`\n";
 
                         if (!(Character.toString(letraCodigo[i]).equals(")")) || token.isEmpty()) {
                             token = token + letraCodigo[i];
@@ -62,7 +61,7 @@ public class Traductor {
                             break;
                         }
                         token = "" + letraCodigo[i];
-                        tokens.add(token);
+                        tokens = tokens + "PARENTESIS CERRADO `" + token + "`\n";
                         i++;
                         /*En caso de no llegar a tener ";" ocurre exepcion porque se esta pasando del limite
                         del array*/
@@ -73,7 +72,7 @@ public class Traductor {
                             error = "';' Es esperado al cerrar parentesis en la linea: " + (linea);
                             break;
                         }
-                        tokens.add(token);
+                        tokens = tokens + "PUNTO Y COMA => `" + token + "`\n+------------------------------+\n\n";
                         token = "";
                         error = "";
                         linea++;
@@ -95,7 +94,7 @@ public class Traductor {
         }
         if (!error.isEmpty()) {
             tokensUtiles.clear();
-            tokens.clear();
+            tokens = "";
         }
     }
 
@@ -113,7 +112,7 @@ public class Traductor {
         int TIEMPO_MOVIMIENTO = 500;
         int VELOCIDAD = 255;
         if (error.isEmpty() && !tokensUtiles.isEmpty()) {
-            System.out.println("Tokens: " + tokens);
+            
             String parar =
                     """
                               motor1.run(RELEASE);
@@ -153,10 +152,50 @@ public class Traductor {
                 switch (token) {
                     case "NORTE":
                         pasos = Integer.parseInt(tokensUtiles.get(i + 1)) * TIEMPO_MOVIMIENTO;
+                        //No necesita ajuste
+                        if(i == 0 || Objects.equals(tokensUtiles.get(i - 2), "NORTE")) {
                         arduino.append(
                                 "   // NORTE\n" +
                                         parar + avanzar +
                                         "   delay(" + pasos + ");\n\n");
+                        }
+                        // Ajuste desde este
+                        else if(Objects.equals(tokensUtiles.get(i - 2), "ESTE")) {
+                            arduino.append(" //NORTE  (de ESTE apunta a NORTE)\n" +
+                                            " // ESTE => OESTE (ahora gira en direccion contraria para apuntar al norte)\n" +
+                                            parar +
+                                            "  motor1.setSpeed(" + VELOCIDAD + ");\n" +
+                                            "  motor1.run(FORWARD);\n" +
+                                            "  motor2.setSpeed(" + VELOCIDAD + ");\n" +
+                                            "  motor2.run(BACKWARD);\n" +
+                                            "  motor3.setSpeed(" + VELOCIDAD + ");\n" +
+                                            "  motor3.run(BACKWARD);\n" +
+                                            "  motor4.setSpeed(" + VELOCIDAD + ");\n" +
+                                            "  motor4.run(FORWARD);\n" +
+                                            "  delay(1000);\n" +
+                                            parar +
+                                            avanzar +
+                                            "   delay(" + pasos + ");\n\n"
+                                    );
+                        } // Ajuste desde oeste
+                        else if(Objects.equals(tokensUtiles.get(i - 2), "OESTE")) {
+                            arduino.append(" //NORTE  (de OESTE apunta a NORTE)\n" +
+                                    " // OESTE => ESTE (ahora gira en direccion contraria para apuntar al norte)\n" +
+                                    parar +
+                                    "  motor1.setSpeed(" + VELOCIDAD + ");\n" +
+                                    "  motor1.run(BACKWARD);\n" +
+                                    "  motor2.setSpeed(" + VELOCIDAD + ");\n" +
+                                    "  motor2.run(FORWARD);\n" +
+                                    "  motor3.setSpeed(" + VELOCIDAD + ");\n" +
+                                    "  motor3.run(FORWARD);\n" +
+                                    "  motor4.setSpeed(" + VELOCIDAD + ");\n" +
+                                    "  motor4.run(BACKWARD);\n" +
+                                    "  delay(1000);\n" +
+                                    parar +
+                                    avanzar +
+                                    "   delay(" + pasos + ");\n\n"
+                            );
+                        }
                         i++;
                         break;
                     case "ESTE":
@@ -215,7 +254,13 @@ public class Traductor {
             arduino.append(error);
         }
         tokensUtiles.clear();
-        tokens.clear();
         return arduino.toString();
+    }
+
+    public String getTokens() {
+        if(!tokens.isEmpty()) {
+            return tokens;
+        }
+        return "Vacio...";
     }
 }

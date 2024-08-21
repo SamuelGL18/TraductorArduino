@@ -41,6 +41,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         botonTraducir = new javax.swing.JButton();
         botonCopiar = new javax.swing.JButton();
+        botonMostrarTokens = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -61,6 +62,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         botonTraducir.setIcon(new javax.swing.ImageIcon("C:\\Users\\samue\\OneDrive - Universidad Mariano Gálvez\\Escritorio\\TraductorArduino\\src\\main\\java\\com\\mycompany\\traductorarduino\\resources\\play.png")); // NOI18N
+        botonTraducir.setToolTipText("Traducir");
         botonTraducir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonTraducirActionPerformed(evt);
@@ -68,13 +70,23 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel2.add(botonTraducir);
 
-        botonCopiar.setIcon(new javax.swing.ImageIcon("C:\\Users\\samue\\OneDrive - Universidad Mariano Gálvez\\Escritorio\\TraductorArduino\\src\\main\\java\\com\\mycompany\\traductorarduino\\resources\\notes.png")); // NOI18N
+        botonCopiar.setIcon(new javax.swing.ImageIcon("C:\\Users\\samue\\OneDrive - Universidad Mariano Gálvez\\Escritorio\\TraductorArduino\\src\\main\\java\\com\\mycompany\\traductorarduino\\resources\\duplicate.png")); // NOI18N
+        botonCopiar.setToolTipText("Copiar codigo");
         botonCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonCopiarActionPerformed(evt);
             }
         });
         jPanel2.add(botonCopiar);
+
+        botonMostrarTokens.setIcon(new javax.swing.ImageIcon("C:\\Users\\samue\\OneDrive - Universidad Mariano Gálvez\\Escritorio\\TraductorArduino\\src\\main\\java\\com\\mycompany\\traductorarduino\\resources\\terminal.png")); // NOI18N
+        botonMostrarTokens.setToolTipText("Mostrar tokens");
+        botonMostrarTokens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonMostrarTokensActionPerformed(evt);
+            }
+        });
+        jPanel2.add(botonMostrarTokens);
         jPanel2.add(filler1);
         jPanel2.add(filler2);
         jPanel2.add(filler3);
@@ -154,6 +166,12 @@ public class Gui extends javax.swing.JFrame {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(codigo, null);
     }//GEN-LAST:event_botonCopiarActionPerformed
 
+    private void botonMostrarTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonMostrarTokensActionPerformed
+        // TODO add your handling code here:
+        String tokens = traductor.getTokens();
+        new Tokens(null, true, tokens).show();
+    }//GEN-LAST:event_botonMostrarTokensActionPerformed
+
 public static void main(String[] args) {
         // Schedule the GUI creation on the Event Dispatch Thread
         SwingUtilities.invokeLater(new Runnable() {
@@ -166,6 +184,7 @@ public static void main(String[] args) {
     public Traductor traductor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCopiar;
+    private javax.swing.JButton botonMostrarTokens;
     private javax.swing.JButton botonTraducir;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
