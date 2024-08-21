@@ -30,10 +30,17 @@ public class Traductor {
         try {
             for (int i = 0; i < letraCodigo.length; i++) {
                 char l = letraCodigo[i];
-                // Es case sensitive "normal" != "NORMAL"
-                if (Character.isUpperCase(l)) {
+                // Es case sensitive "normal" != "NORMAL", no importan tabs o espacios
+                if (Character.isUpperCase(l) || l == '\t' || l == ' ' || l == '\n') {
                     /*La funcion esTokenValido chequea si encuentra una palabra reservada
                     * y se asegura que le siga un parentesis*/
+                    while(l == '\t' || l == ' ' || l == '\n') {
+                        i++;
+                        l = letraCodigo[i];
+                        if(Character.isUpperCase(l)) {
+                            break;
+                        }
+                    }
                     token = token + l;
                     char siguiente = letraCodigo[i + 1];
                     if (esTokenValido(token, siguiente)) {
