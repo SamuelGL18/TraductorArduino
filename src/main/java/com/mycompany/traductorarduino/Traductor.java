@@ -32,9 +32,34 @@ public class Traductor {
             for (int i = 0; i < letraCodigo.length; i++) {
                 char l = letraCodigo[i];
                 // Es case sensitive "normal" != "NORMAL", no importan tabs o espacios
-                if (Character.isUpperCase(l) || l == '\t' || l == ' ' || l == '\n') {
+                if (Character.isUpperCase(l) || l == '\t' || l == ' ' || l == '\n' || l == '-') {
                     /*La funcion esTokenValido chequea si encuentra una palabra reservada
                     * y se asegura que le siga un parentesis*/
+                    
+                    while(l == '\t' || l == ' ' || l == '\n') {
+                        i++;
+                        l = letraCodigo[i];
+                        if(Character.isUpperCase(l)) {
+                            break;
+                        }
+                    }
+                    
+                    if(l == '-') {
+                        i++;
+                        l = letraCodigo[i];
+                        while(l != '-') {
+                            if (i + 1 < letraCodigo.length) {
+                                i++;
+                                l = letraCodigo[i];
+                            } else {
+                                i = i - 2;
+                                break;
+                            }
+                        }
+                        i++;
+                        l = letraCodigo[i];
+                    }
+                    
                     while(l == '\t' || l == ' ' || l == '\n') {
                         i++;
                         l = letraCodigo[i];
@@ -100,6 +125,7 @@ public class Traductor {
         } catch (ArrayIndexOutOfBoundsException e) {
             
         }
+        
         if (!error.isEmpty()) {
             tokensUtiles.clear();
             tokens = "";
