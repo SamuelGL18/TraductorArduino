@@ -58,6 +58,7 @@ public class Traductor {
                         } 
                     }
                     
+                    do{
                     if(l == '-') {
                         i++;
                         l = letraCodigo[i];
@@ -75,7 +76,36 @@ public class Traductor {
                         }
                         i++;
                         l = letraCodigo[i];
-                    }
+                        // Va a ver si encuentra un comentario...
+                        if (l == ' ' || l == '\t' || l == '\n') {
+                            int j = i;
+                            j++;
+                            while(letraCodigo[j] != '-') {
+                                if(letraCodigo[j] == '\n') {
+                                    linea++;
+                                }
+                                if (j + 1 < letraCodigo.length) {
+                                    j++;
+                                    if (letraCodigo[j] == '-') {
+                                        i = j;
+                                        l = letraCodigo[i];
+                                        break;
+                                    }
+                                    if (Character.isUpperCase(letraCodigo[j])) {
+                                        i = j;
+                                        l = letraCodigo[i];
+                                        break;
+                                    }
+                                } else {
+                                    break;
+                                }
+                            } 
+                            if (letraCodigo[j] == '-') {
+                                i = j;
+                                l = letraCodigo[i];
+                            }
+                        }
+                    }} while(l == '-');
                     
                     while(l == '\t' || l == ' ' || l == '\n') {
                         if(l == '\n') {
