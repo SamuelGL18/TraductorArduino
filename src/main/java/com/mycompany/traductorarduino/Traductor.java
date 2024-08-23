@@ -77,7 +77,7 @@ public class Traductor {
                         i++;
                         l = letraCodigo[i];
                         // Va a ver si encuentra un comentario...
-                        if (l == ' ' || l == '\t' || l == '\n') {
+                        if (l == ' ' || l == '\t' || l == '\n' && !Character.isUpperCase(letraCodigo[i + 1])) {
                             int j = i;
                             j++;
                             while(letraCodigo[j] != '-') {
@@ -92,9 +92,9 @@ public class Traductor {
                                         break;
                                     }
                                     if (Character.isUpperCase(letraCodigo[j])) {
-                                        i = j;
-                                        l = letraCodigo[i];
+                                        i = j; l = letraCodigo[i];
                                         break;
+                                        
                                     }
                                 } else {
                                     break;
