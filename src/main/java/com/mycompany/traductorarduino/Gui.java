@@ -152,8 +152,8 @@ public class Gui extends javax.swing.JFrame {
     private void botonTraducirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTraducirActionPerformed
         // TODO add your handling code here:
         String codigo = textAreaCodigoPilot.getText();
-        traductor.getTokensValidos(codigo);
-        String codigoArduino = traductor.getArduino();
+        traductor.analizarCodigoFuente(codigo);
+        String codigoArduino = traductor.getCodigoArduino();
         textAreaCodigoArduino.setText(codigoArduino);
         StringSelection codigoCopia = new StringSelection(codigoArduino);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(codigoCopia, null);
