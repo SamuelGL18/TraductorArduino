@@ -51,7 +51,7 @@ public class Traductor {
                 /*Esta variable contendra todos los caracteres del codigo ingresado segun avance
                 el programa.*/
                 char l = codigoPilotCharArray[i];
-
+                
                 // EL ANALIZAR SINTACTICO EMPIEZA AQUI
 
                 /*Los comentarios del lenguaje pilot son asi:
@@ -161,6 +161,10 @@ public class Traductor {
                                     comentario. Se hace un subindice solo para asegurarse de que haya otro comentario*/
                                     int j = i;
                                     j++;
+                                    if (!Character.isUpperCase(codigoPilotCharArray[j]) && codigoPilotCharArray[j] != '\t' && codigoPilotCharArray[j] != ' ' && codigoPilotCharArray[j] != '\n' && codigoPilotCharArray[j] != '-') {
+                                        error = "invalido";
+                                        break;
+                                    }
                                     /*Misma logica*/
                                     while (codigoPilotCharArray[j] != '-') {
                                         if (codigoPilotCharArray[j] == '\n') {
@@ -194,12 +198,15 @@ public class Traductor {
                         /*Do while por si le siguen espacios en blanco, tabs o saltos de linea
                         para volver a omitirlos*/
                     } while (l == '\t' || l == ' ' || l == '\n');
-
                     /*ULTIMA FASE: SINTAXIS*/
                     /*Concatena SOLO LETRAS MAYUSCULAS ya que por cada letra en el codigo fuente,
                     chequea si es una direccion valida. Las direcciones son NORTE, ESTE, OESTE; y para
                     ser validas le tiene que seguir un parentesis abierto, para que no sea valido: NORTE3,
                     NORTEFDKLSJF, NORTE;, etc*/
+                    if (!Character.isUpperCase(l) && l != '\t' && l != ' ' && l != '\n' && l != '-') {
+                        error = "invalido";
+                        break;
+                    }
                     token = token + l;
                     char siguiente = codigoPilotCharArray[i + 1];
                     if (esDireccionValida(token, siguiente)) {
@@ -242,7 +249,6 @@ public class Traductor {
                         token = "";
                         error = "";
                         linea++;
-                        i++;
                     } else {
                         error = "'" + token + "...'" + " no es una direccion valida o necesita parentesis..." +
                                 "\n Direcciones permitidas: NORTE, ESTE, OESTE. Error " +
