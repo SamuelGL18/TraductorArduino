@@ -283,9 +283,9 @@ public class Traductor {
         StringBuilder arduino = new StringBuilder();
 
         /*Constantes*/
-        final int TIEMPO_MOVIMIENTO = 500;
+        final int TIEMPO_MOVIMIENTO = 850;
         final int VELOCIDAD = 255;
-        final int DELAY_GIRO = 1000;
+        final int DELAY_GIRO = 300;
 
         if (error.isEmpty() && !tokensUtiles.isEmpty()) {
             String parar =
@@ -294,7 +294,7 @@ public class Traductor {
                               motor2.run(RELEASE);
                               motor3.run(RELEASE);
                               motor4.run(RELEASE);
-                              delay(250);
+                              delay(250);\n
                             """;
             String avanzar =
                     "  motor1.setSpeed(" + VELOCIDAD + ");\n" +
